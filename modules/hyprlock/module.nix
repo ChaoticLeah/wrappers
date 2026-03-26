@@ -101,14 +101,15 @@ in
 
   config.flags = {
     "--config" = toString config."hyprlock.conf".path;
-  }
-  // lib.optionalAttrs config.verbose { "--verbose" = null; }
-  // lib.optionalAttrs config.quiet { "--quiet" = null; }
-  // lib.optionalAttrs (config.display != null) { "--display" = config.display; }
-  // lib.optionalAttrs (config.grace != null) { "--grace" = toString config.grace; }
-  // lib.optionalAttrs config.immediateRender { "--immediate-render" = null; }
-  // lib.optionalAttrs config.noFadeIn { "--no-fade-in" = null; };
+  };
+
+  config.meta.maintainers = [
+    {
+      name = "ChaoticLeah";
+      github = "ChaoticLeah";
+      githubId = 45321184;
+    }
+  ];
 
   config.package = config.pkgs.hyprlock;
-  config.meta.maintainers = [ ];
 }
