@@ -4,20 +4,39 @@
   wlib,
   ...
 }:
+
+let
+  kvFmt = config.pkgs.formats.keyValue {
+    listsAsDuplicateKeys = true;
+  };
+in
 {
   _class = "wrapper";
   options = {
-    configFile = lib.mkOption {
-      type = wlib.types.file config.pkgs;
-      default.content = "";
+    settings = lib.mkOption {
+      type = kvFmt.type;
+      default = { };
       description = ''
-        MangoWM (mangowc) configuration.
+        Configuration for MangoWM (mangowc).
+        See <https://github.com/mangowm/mango/wiki/basics>
+      '';
+      example = {
+        "border-width" = 1;
+        gaps = 5;
+        "exec-once" = "waybar";
+      };
+    };
+    "config.conf" = lib.mkOption {
+      type = wlib.types.file config.pkgs;
+      default.path = kvFmt.generate "config.conf" config.settings;
+      description = ''
+        Raw configuration file for mangowc
       '';
     };
   };
 
   config.flags = {
-    "-c" = toString config.configFile.path;
+    "-c" = toString config."config.conf".path;
   };
 
   config.package = config.pkgs.mangowc;
